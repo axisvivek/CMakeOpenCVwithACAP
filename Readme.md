@@ -6,7 +6,7 @@
 
 > git clone https://github.com/opencv/opencv.git
 
-> git clone https://github.com/Tencent/ncnn.
+> git clone https://github.com/opencv/opencv_contrib.git
 git
 
 ```bash
@@ -24,22 +24,5 @@ git
   
   mkdir install_aarch32
   make DESTDIR=./install_aarch32 install
-
-```
-
-```bash
-
- ####################
-  # build for aarch32
-  ####################
-  
-  mkdir build_aarch32
-  cd build_aarch32
-  
-  cmake -D NCNN_BUILD_TOOLS=OFF -D NCNN_VULKAN=OFF -D CMAKE_BUILD_TYPE=Release -D NCNN_DISABLE_RTTI=OFF -D CMAKE_TOOLCHAIN_FILE=../toolchains/arm-linux-gnueabihf.toolchain.cmake ..
-
-  
-  make -j$(nproc)
-  make install
 
 ```
