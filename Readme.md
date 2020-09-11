@@ -1,53 +1,45 @@
-> Example of using OpenCV with ACAP using CMake
+> source /opt/axis/acapsdk/3.00.1/cortexa9hf-neon/environment-setup-cortexa9hf-neon-poky-linux-gnueabi
 
-```bat
-(base) vivek@VIVEK-PC:$ rm CMakeCache.txt
-(base) vivek@VIVEK-PC:$ cmake .
--- Toolchain file defaulted to '/opt/axis/acapsdk/3.00.1/cortexa9hf-neon/sysroots/x86_64-pokysdk-linux/usr/share/cmake/OEToolchainConfig.cmake'
--- The C compiler identification is GNU 8.3.0
--- The CXX compiler identification is GNU 8.3.0
--- Check for working C compiler: /opt/axis/acapsdk/3.00.1/cortexa9hf-neon/sysroots/x86_64-pokysdk-linux/usr/bin/arm-poky-linux-gnueabi/arm-poky-linux-gnueabi-gcc
--- Check for working C compiler: /opt/axis/acapsdk/3.00.1/cortexa9hf-neon/sysroots/x86_64-pokysdk-linux/usr/bin/arm-poky-linux-gnueabi/arm-poky-linux-gnueabi-gcc -- works
--- Detecting C compiler ABI info
--- Detecting C compiler ABI info - done
--- Detecting C compile features
--- Detecting C compile features - done
--- Check for working CXX compiler: /opt/axis/acapsdk/3.00.1/cortexa9hf-neon/sysroots/x86_64-pokysdk-linux/usr/bin/arm-poky-linux-gnueabi/arm-poky-linux-gnueabi-g++
--- Check for working CXX compiler: /opt/axis/acapsdk/3.00.1/cortexa9hf-neon/sysroots/x86_64-pokysdk-linux/usr/bin/arm-poky-linux-gnueabi/arm-poky-linux-gnueabi-g++ -- works
--- Detecting CXX compiler ABI info
--- Detecting CXX compiler ABI info - done
--- Detecting CXX compile features
--- Detecting CXX compile features - done
--- Found OpenCV: /mnt/d/WindowsSubsytemLinux/April2020/cmaketest/tutorials/install_aarch32/usr/local (found suitable version "4.3.0", minimum required is "4")
--- OpenCV library status:
---     version: 4.3.0
---     libraries: opencv_calib3d;opencv_core;opencv_dnn;opencv_features2d;opencv_flann;opencv_gapi;opencv_highgui;opencv_imgcodecs;opencv_imgproc;opencv_ml;opencv_objdetect;opencv_photo;opencv_stitching;opencv_video;opencv_videoio
---     include path: /mnt/d/WindowsSubsytemLinux/April2020/cmaketest/tutorials/install_aarch32/usr/local/include/opencv4
--- Configuring done
--- Generating done
--- Build files have been written to: /mnt/d/WindowsSubsytemLinux/April2020/cmaketest/tutorials
-(base) vivek@VIVEK-PC:$ make
-Scanning dependencies of target hello_opencv
-[ 50%] Linking CXX executable hello_opencv
-[100%] Built target hello_opencv
-(base) vivek@VIVEK-PC:/mnt/d/WindowsSubsytemLinux/April2020/cmaketest/tutorials$ create-package.sh
-make[100%] Built target hello_opencv
-eap-create.sh
-Reading local package.conf... ok
-Package architecture: cortexa9hf-neon
-Validating Package config...
-Saving Package config: 'package.conf'...ok
-Creating Package: 'hello_opencv_1_0_0_armv7hf.eap'... ok
-Copying LICENSE file... ok
+> arm-poky-linux-gnueabi-g++
 
-To install and run the package, you can use a browser and surf to the following page,
-(replace axis_device_ip with the IP number of your Axis video product)
+> arm-poky-linux-gnueabi-gcc
 
-http://axis_device_ip/#settings/apps
+> git clone https://github.com/opencv/opencv.git
 
-Or simply use the script and type
-eap-install.sh install
+> git clone https://github.com/Tencent/ncnn.
+git
 
+```bash
 
+####################
+  # build for aarch32
+  ####################
+  
+  mkdir build_aarch32
+  cd build_aarch32
+  
+  cmake -DCMAKE_TOOLCHAIN_FILE="../platforms/linux/arm-gnueabi.toolchain.cmake" -D CMAKE_INSTALL_PREFIX="/usr/local" -D BUILD_SHARED_LIBS=OFF -D CMAKE_BUILD_TYPE=RELEASE -D BUILD_DOCS=OFF -D BUILD_EXAMPLES=OFF -D BUILD_opencv_apps=OFF -D WITH_CAROTENE=OFF -D BUILD_opencv_python2=OFF -D BUILD_opencv_python3=OFF -D BUILD_PERF_TESTS=OFF -D BUILD_TESTS=OFF -D FORCE_VTK=OFF -D WITH_FFMPEG=OFF -D WITH_GDAL=OFF -D WITH_IPP=OFF -D WITH_OPENEXR=OFF -D WITH_OPENGL=OFF -D WITH_QT=OFF -D WITH_TBB=OFF -D WITH_XINE=OFF -D BUILD_JPEG=ON -D BUILD_ZLIB=ON -D BUILD_PNG=ON -D BUILD_TIFF=OFF -D BUILD_BUILD_JASPER=OFF -D WITH_ITT=OFF -D WITH_LAPACK=OFF -D WITH_OPENCL=OFF -D WITH_TIFF=OFF -D WITH_PNG=ON -D WITH_OPENCLAMDFFT=OFF -D WITH_OPENCLAMDBLAS=OFF -D WITH_VA_INTEL=OFF -D WITH_WEBP=OFF -D WITH_JASPER=OFF OPENCV_EXTRA_MODULES_PATH="/mnt/d/Git/OpenCV/Build/opencv_contrib/modules" ..
+  
+  make -j$(nproc)
+  
+  mkdir install_aarch32
+  make DESTDIR=./install_aarch32 install
+
+```
+
+```bash
+
+ ####################
+  # build for aarch32
+  ####################
+  
+  mkdir build_aarch32
+  cd build_aarch32
+  
+  cmake -D NCNN_BUILD_TOOLS=OFF -D NCNN_VULKAN=OFF -D CMAKE_BUILD_TYPE=Release -D NCNN_DISABLE_RTTI=OFF -D CMAKE_TOOLCHAIN_FILE=../toolchains/arm-linux-gnueabihf.toolchain.cmake ..
+
+  
+  make -j$(nproc)
+  make install
 
 ```
